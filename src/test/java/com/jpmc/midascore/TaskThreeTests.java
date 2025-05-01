@@ -1,5 +1,7 @@
 package com.jpmc.midascore;
 
+import com.jpmc.midascore.entity.UserRecord;
+import com.jpmc.midascore.repository.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,6 +25,9 @@ public class TaskThreeTests {
     @Autowired
     private FileLoader fileLoader;
 
+    @Autowired
+    private UserRepository userRepository;
+
     @Test
     void task_three_verifier() throws InterruptedException {
         userPopulator.populate();
@@ -32,6 +37,15 @@ public class TaskThreeTests {
         }
         Thread.sleep(2000);
 
+
+        // 查询 waldorf 的最终余额
+        UserRecord waldorf = userRepository.findById(5L);
+        float finalBalance = waldorf.getBalance();
+        logger.info("Waldorf's final balance: {}", finalBalance);
+
+        // 如果你想看到向下取整的结果
+        int roundedBalance = (int) Math.floor(finalBalance);
+        logger.info("Waldorf's final balance (rounded down): {}", roundedBalance);
 
         logger.info("----------------------------------------------------------");
         logger.info("----------------------------------------------------------");
